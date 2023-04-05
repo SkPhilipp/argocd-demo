@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello-kubernetes
+  namespace: argocd
+spec:
+  destination:
+    namespace: demo
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    path: hello-kubernetes/deploy/helm/hello-kubernetes
+    repoURL: https://github.com/SkPhilipp/argocd-demo.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated: {}

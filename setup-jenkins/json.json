@@ -1,0 +1,232 @@
+{
+    "apiVersion": "v1",
+    "items": [
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "creationTimestamp": "2023-04-05T13:29:40Z",
+                "generateName": "jenkins-5498fbb866-",
+                "labels": {
+                    "app": "jenkins-server",
+                    "pod-template-hash": "5498fbb866"
+                },
+                "name": "jenkins-5498fbb866-r4ml9",
+                "namespace": "devops-tools",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "jenkins-5498fbb866",
+                        "uid": "82fd2372-d16a-41c1-98f1-6cc14a221622"
+                    }
+                ],
+                "resourceVersion": "695",
+                "uid": "eebc493a-c607-4a47-b80e-063a62d96651"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "jenkins/jenkins:lts",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 5,
+                            "httpGet": {
+                                "path": "/login",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 90,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 5
+                        },
+                        "name": "jenkins",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "name": "httpport",
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 50000,
+                                "name": "jnlpport",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/login",
+                                "port": 8080,
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 60,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 5
+                        },
+                        "resources": {
+                            "limits": {
+                                "cpu": "1",
+                                "memory": "2Gi"
+                            },
+                            "requests": {
+                                "cpu": "500m",
+                                "memory": "500Mi"
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/jenkins_home",
+                                "name": "jenkins-data"
+                            },
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-27m69",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "nodeName": "docker-desktop",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "fsGroup": 1000,
+                    "runAsUser": 1000
+                },
+                "serviceAccount": "jenkins-admin",
+                "serviceAccountName": "jenkins-admin",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "jenkins-data",
+                        "persistentVolumeClaim": {
+                            "claimName": "jenkins-pv-claim"
+                        }
+                    },
+                    {
+                        "name": "kube-api-access-27m69",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2023-04-05T13:29:41Z",
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2023-04-05T13:30:53Z",
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2023-04-05T13:30:53Z",
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2023-04-05T13:29:41Z",
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "containerID": "docker://b5b538b83db905720f69941bb0ab15c9318ab9a9a85bd76eb95873cd004f0582",
+                        "image": "jenkins/jenkins:lts",
+                        "imageID": "docker-pullable://jenkins/jenkins@sha256:aacbb5797dd210cc048038d9d3e5ab5795ea018fad843ffc1888c547911819ce",
+                        "lastState": {},
+                        "name": "jenkins",
+                        "ready": true,
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2023-04-05T13:29:51Z"
+                            }
+                        }
+                    }
+                ],
+                "hostIP": "192.168.65.4",
+                "phase": "Running",
+                "podIP": "10.1.0.62",
+                "podIPs": [
+                    {
+                        "ip": "10.1.0.62"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "startTime": "2023-04-05T13:29:41Z"
+            }
+        }
+    ],
+    "kind": "List",
+    "metadata": {
+        "resourceVersion": ""
+    }
+}
